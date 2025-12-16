@@ -55,7 +55,7 @@ pub struct Transform {
     reserved_0: u8,
     #[deku(update = "self.transform_attributes.len() + 8")]
     transform_length: u16,
-    transform_type: u8,
+    transform_type: TransformType,
     reserved_1: u8,
     transform_id: u16,
     #[deku(count = "transform_length - 8")]

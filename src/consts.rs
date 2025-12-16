@@ -122,6 +122,48 @@ pub enum ProtocolIdentifier {
     Private(u8),
 }
 
+/// Transform Type Values
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-3
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum TransformType {
+    #[deku(id = 0)]
+    Reserved,
+    #[deku(id = 1)]
+    ENCR,
+    #[deku(id = 2)]
+    PRF,
+    #[deku(id = 3)]
+    INTEG,
+    #[deku(id = 4)]
+    KE,
+    #[deku(id = 5)]
+    SN,
+    #[deku(id = 6)]
+    ADDKE1,
+    #[deku(id = 7)]
+    ADDKE2,
+    #[deku(id = 8)]
+    ADDKE3,
+    #[deku(id = 9)]
+    ADDKE4,
+    #[deku(id = 10)]
+    ADDKE5,
+    #[deku(id = 11)]
+    ADDKE6,
+    #[deku(id = 12)]
+    ADDKE7,
+    #[deku(id = 13)]
+    KWA,
+    #[deku(id = 14)]
+    GCAUTH,
+    #[deku(id_pat = "15..=240")]
+    Unassigned(u8),
+    #[deku(id_pat = "241..=255")]
+    Private(u8),
+}
+
 #[allow(non_camel_case_types)]
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
