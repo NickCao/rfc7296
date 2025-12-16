@@ -243,7 +243,29 @@ pub enum SN {
     #[deku(id = 2)]
     Unspecified_32,
     #[deku(id_pat = "3..=1023")]
-    Unassigned1(u16),
+    Unassigned(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
+
+/// Transform Type 13 - Key Wrap Algorithm Transform IDs
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#key-wrap-algorithm-transform-ids
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum KW {
+    #[deku(id = 0)]
+    Reserved,
+    #[deku(id = 1)]
+    KW_5649_128,
+    #[deku(id = 2)]
+    KW_5649_192,
+    #[deku(id = 3)]
+    KW_5649_256,
+    #[deku(id = 4)]
+    KW_ARX,
+    #[deku(id_pat = "5..=1023")]
+    Unassigned(u16),
     #[deku(id_pat = "1024..=65535")]
     Private(u16),
 }
