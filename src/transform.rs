@@ -229,3 +229,21 @@ pub enum KE {
     #[deku(id_pat = "1024..=65535")]
     Private(u16),
 }
+
+/// Transform Type 5 - Sequence Numbers Transform IDs
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-9
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum SN {
+    #[deku(id = 0)]
+    Sequential_32,
+    #[deku(id = 1)]
+    Sequential_64,
+    #[deku(id = 2)]
+    Unspecified_32,
+    #[deku(id_pat = "3..=1023")]
+    Unassigned1(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
