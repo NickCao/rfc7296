@@ -3,7 +3,7 @@ use deku::prelude::*;
 /// IKEv2 Exchange Types
 /// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-1
 #[allow(non_camel_case_types)]
-#[derive(Debug, PartialEq, DekuRead, DekuWrite)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
 pub enum ExchangeType {
     #[deku(id_pat = "0..=33")]
@@ -39,7 +39,7 @@ pub enum ExchangeType {
 /// IKEv2 Payload Types
 /// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-2
 #[allow(non_camel_case_types)]
-#[derive(Debug, PartialEq, DekuRead, DekuWrite)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
 pub enum PayloadType {
     #[deku(id = 0)]

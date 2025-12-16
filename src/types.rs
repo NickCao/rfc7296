@@ -19,7 +19,7 @@ pub struct IKEHeader {
     length: u32,
 }
 
-#[derive(Debug, PartialEq, DekuRead, DekuWrite)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(endian = "big")]
 pub struct PayloadHeader {
     next_payload: PayloadType,
@@ -53,7 +53,10 @@ pub struct Flags {
 
 #[cfg(test)]
 mod test {
-    use std::{io::Cursor, num::NonZero};
+    use std::{
+        io::{Cursor, Seek},
+        num::NonZero,
+    };
 
     use super::*;
 
@@ -183,5 +186,70 @@ mod test {
                 }
             ))
         );
+
+        let mut headers = vec![];
+        loop {
+            let payload_header = PayloadHeader::from_reader((&mut packet, 0)).unwrap().1;
+            packet
+                .seek_relative(i64::from(payload_header.payload_length) - 4)
+                .unwrap();
+            headers.push(payload_header.clone());
+            if payload_header.next_payload == PayloadType::NoNextPayload {
+                break;
+            }
+        }
+        assert_eq!(
+            headers,
+            vec![
+                PayloadHeader {
+                    next_payload: PayloadType::KE,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 748,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::Nonce,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 72,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::N,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 36,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::N,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 28,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::N,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 28,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::N,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 8,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::N,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 16,
+                },
+                PayloadHeader {
+                    next_payload: PayloadType::NoNextPayload,
+                    critical: false,
+                    reserved: 0,
+                    payload_length: 8,
+                }
+            ]
+        )
     }
 }
