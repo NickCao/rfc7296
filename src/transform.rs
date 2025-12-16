@@ -1,11 +1,11 @@
 use deku::prelude::*;
 
 /// Transform Type 1 - Encryption Algorithm Transform IDs
-/// https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-5
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-5
 #[allow(non_camel_case_types)]
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
-pub enum ENCRTransformID {
+pub enum ENCR {
     #[deku(id = 0)]
     Reserved0,
     #[deku(id = 1)]
@@ -85,11 +85,11 @@ pub enum ENCRTransformID {
 }
 
 /// Transform Type 2 - Pseudorandom Function Transform IDs
-/// https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-6
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-6
 #[allow(non_camel_case_types)]
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
-pub enum PRFTransformID {
+pub enum PRF {
     #[deku(id = 0)]
     Reserved,
     #[deku(id = 1)]
@@ -111,6 +111,48 @@ pub enum PRFTransformID {
     #[deku(id = 9)]
     PRF_HMAC_STREEBOG_512,
     #[deku(id_pat = "10..=1023")]
+    Unassigned(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
+
+/// Transform Type 3 - Integrity Algorithm Transform IDs
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-7
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum AUTH {
+    #[deku(id = 0)]
+    NONE,
+    #[deku(id = 1)]
+    AUTH_HMAC_MD5_96,
+    #[deku(id = 2)]
+    AUTH_HMAC_SHA1_96,
+    #[deku(id = 3)]
+    AUTH_DES_MAC,
+    #[deku(id = 4)]
+    AUTH_KPDK_MD5,
+    #[deku(id = 5)]
+    AUTH_AES_XCBC_96,
+    #[deku(id = 6)]
+    AUTH_HMAC_MD5_128,
+    #[deku(id = 7)]
+    AUTH_HMAC_SHA1_160,
+    #[deku(id = 8)]
+    AUTH_AES_CMAC_96,
+    #[deku(id = 9)]
+    AUTH_AES_128_GMAC,
+    #[deku(id = 10)]
+    AUTH_AES_192_GMAC,
+    #[deku(id = 11)]
+    AUTH_AES_256_GMAC,
+    #[deku(id = 12)]
+    AUTH_HMAC_SHA2_256_128,
+    #[deku(id = 13)]
+    AUTH_HMAC_SHA2_384_192,
+    #[deku(id = 14)]
+    AUTH_HMAC_SHA2_512_256,
+    #[deku(id_pat = "15..=1023")]
     Unassigned(u16),
     #[deku(id_pat = "1024..=65535")]
     Private(u16),
