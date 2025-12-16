@@ -1,5 +1,7 @@
 use deku::prelude::*;
 
+use crate::transform;
+
 /// IKEv2 Exchange Types
 /// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-1
 #[allow(non_camel_case_types)]
@@ -129,39 +131,39 @@ pub enum ProtocolIdentifier {
 #[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
 pub enum TransformType {
     #[deku(id = 0)]
-    Reserved,
+    Reserved(u8, u16),
     #[deku(id = 1)]
-    ENCR,
+    ENCR(u8, transform::ENCR),
     #[deku(id = 2)]
-    PRF,
+    PRF(u8, transform::PRF),
     #[deku(id = 3)]
-    INTEG,
+    INTEG(u8, u16),
     #[deku(id = 4)]
-    KE,
+    KE(u8, transform::KE),
     #[deku(id = 5)]
-    SN,
+    SN(u8, transform::SN),
     #[deku(id = 6)]
-    ADDKE1,
+    ADDKE1(u8, u16),
     #[deku(id = 7)]
-    ADDKE2,
+    ADDKE2(u8, u16),
     #[deku(id = 8)]
-    ADDKE3,
+    ADDKE3(u8, u16),
     #[deku(id = 9)]
-    ADDKE4,
+    ADDKE4(u8, u16),
     #[deku(id = 10)]
-    ADDKE5,
+    ADDKE5(u8, u16),
     #[deku(id = 11)]
-    ADDKE6,
+    ADDKE6(u8, u16),
     #[deku(id = 12)]
-    ADDKE7,
+    ADDKE7(u8, u16),
     #[deku(id = 13)]
-    KWA,
+    KWA(u8, transform::KWA),
     #[deku(id = 14)]
-    GCAUTH,
+    GCAUTH(u8, u16),
     #[deku(id_pat = "15..=240")]
-    Unassigned(u8),
+    Unassigned(u8, u8, u16),
     #[deku(id_pat = "241..=255")]
-    Private(u8),
+    Private(u8, u8, u16),
 }
 
 #[allow(non_camel_case_types)]

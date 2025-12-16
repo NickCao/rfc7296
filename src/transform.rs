@@ -253,7 +253,7 @@ pub enum SN {
 #[allow(non_camel_case_types)]
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
-pub enum KW {
+pub enum KWA {
     #[deku(id = 0)]
     Reserved,
     #[deku(id = 1)]
