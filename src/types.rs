@@ -1,4 +1,4 @@
-use std::num::NonZeroU64;
+use std::{num::NonZeroU64, u8};
 
 use crate::consts::*;
 use deku::prelude::*;
@@ -28,6 +28,38 @@ pub struct PayloadHeader {
     #[deku(bits = 7)]
     reserved: u8,
     payload_length: u16,
+}
+
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(endian = "big")]
+pub struct Proposal {
+    last_substructure: u8,
+    reserved: u8,
+    proposal_length: u16,
+    proposal_num: u8,
+    protocol_id: u8,
+    #[deku(update = "self.spi.len()")]
+    spi_size: u8,
+    #[deku(update = "self.transforms.len()")]
+    num_transforms: u8,
+    #[deku(count = "spi_size")]
+    spi: Vec<u8>,
+    #[deku(count = "num_transforms")]
+    transforms: Vec<Transform>,
+}
+
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub struct Transform {
+    last_substructure: u8,
+    reserved_0: u8,
+    #[deku(update = "self.transform_attributes.len() + 8")]
+    transform_length: u16,
+    transform_type: u8,
+    reserved_1: u8,
+    transform_id: u16,
+    #[deku(count = "transform_length - 8")]
+    transform_attributes: Vec<u8>,
 }
 
 #[derive(Debug, PartialEq, DekuRead, DekuWrite)]
@@ -187,16 +219,28 @@ mod test {
             ))
         );
 
+        let mut current_payload_type = PayloadType::SA;
         let mut headers = vec![];
         loop {
             let payload_header = PayloadHeader::from_reader((&mut packet, 0)).unwrap().1;
-            packet
-                .seek_relative(i64::from(payload_header.payload_length) - 4)
-                .unwrap();
+            if current_payload_type == PayloadType::SA {
+                loop {
+                    let proposal = Proposal::from_reader((&mut packet, 0));
+                    dbg!(&proposal);
+                    if proposal.unwrap().1.last_substructure == 0 {
+                        break;
+                    }
+                }
+            } else {
+                packet
+                    .seek_relative(i64::from(payload_header.payload_length) - 4)
+                    .unwrap();
+            }
             headers.push(payload_header.clone());
             if payload_header.next_payload == PayloadType::NoNextPayload {
                 break;
             }
+            current_payload_type = payload_header.next_payload;
         }
         assert_eq!(
             headers,
