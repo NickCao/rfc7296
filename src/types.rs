@@ -5,10 +5,10 @@ use deku::prelude::*;
 
 #[derive(Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(endian = "big")]
-pub struct Header {
+pub struct IKEHeader {
     initiator_spi: NonZeroU64,
     responder_spi: u64,
-    next_payload: u8,
+    next_payload: PayloadType,
     #[deku(bits = 4)]
     major_version: u8,
     #[deku(bits = 4)]
@@ -17,6 +17,17 @@ pub struct Header {
     flags: Flags,
     message_id: u32,
     length: u32,
+}
+
+#[derive(Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(endian = "big")]
+pub struct PayloadHeader {
+    next_payload: PayloadType,
+    #[deku(bits = 1)]
+    critical: bool,
+    #[deku(bits = 7)]
+    reserved: u8,
+    payload_length: u16,
 }
 
 #[derive(Debug, PartialEq, DekuRead, DekuWrite)]
@@ -57,11 +68,11 @@ mod test {
             0x3a, 0x58, 0x38, 0x8f, 0xac, 0x94, 0xf1, 0xdd,
         ];
         assert_eq!(
-            Header::try_from(&header[..28]),
-            Ok(Header {
+            IKEHeader::try_from(&header[..28]),
+            Ok(IKEHeader {
                 initiator_spi: NonZero::new(0x62b56d9c3a559d62).unwrap(),
                 responder_spi: 0xe834542c08abba1a,
-                next_payload: 46,
+                next_payload: PayloadType::SK,
                 major_version: 2,
                 minor_version: 0,
                 exchange_type: ExchangeType::INFORMATIONAL,
