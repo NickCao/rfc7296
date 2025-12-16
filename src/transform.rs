@@ -269,3 +269,21 @@ pub enum KW {
     #[deku(id_pat = "1024..=65535")]
     Private(u16),
 }
+
+/// Transform Type 14 - Group Controller Authentication Method Transform IDs
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#group-controller-authentication-method-transform-ids
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum GCAUTH {
+    #[deku(id = 0)]
+    Reserved,
+    #[deku(id = 1)]
+    Implicit,
+    #[deku(id = 2)]
+    DigitalSignature,
+    #[deku(id_pat = "3..=1023")]
+    Unassigned(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
