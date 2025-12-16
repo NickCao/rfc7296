@@ -1,10 +1,12 @@
+use std::num::NonZeroU64;
+
 use crate::consts::*;
 use deku::prelude::*;
 
 #[derive(Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(endian = "big")]
 pub struct Header {
-    initiator_spi: u64,
+    initiator_spi: NonZeroU64,
     responder_spi: u64,
     next_payload: u8,
     #[deku(bits = 4)]
@@ -40,6 +42,8 @@ pub struct Flags {
 
 #[cfg(test)]
 mod test {
+    use std::num::NonZero;
+
     use super::*;
 
     #[test]
@@ -55,7 +59,7 @@ mod test {
         assert_eq!(
             Header::try_from(&header[..28]),
             Ok(Header {
-                initiator_spi: 0x62b56d9c3a559d62,
+                initiator_spi: NonZero::new(0x62b56d9c3a559d62).unwrap(),
                 responder_spi: 0xe834542c08abba1a,
                 next_payload: 46,
                 major_version: 2,
