@@ -95,3 +95,41 @@ pub enum PayloadType {
     #[deku(id_pat = "128..=255")]
     Private(u8),
 }
+
+/// IKEv2 Security Protocol Identifiers
+/// Reference: https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-18
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum ProtocolIdentifier {
+    #[deku(id = 0)]
+    Reserved,
+    #[deku(id = 1)]
+    IKE,
+    #[deku(id = 2)]
+    AH,
+    #[deku(id = 3)]
+    ESP,
+    #[deku(id = 4)]
+    FC_ESP_HEADER,
+    #[deku(id = 5)]
+    FC_CT_AUTHENTICATION,
+    #[deku(id = 6)]
+    GIKE_UPDATE,
+    #[deku(id_pat = "7..=200")]
+    Unassigned(u8),
+    #[deku(id_pat = "201..=255")]
+    Private(u8),
+}
+
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum LastSubstructure {
+    #[deku(id = 0)]
+    Last,
+    #[deku(id = 2)]
+    Proposal,
+    #[deku(id = 3)]
+    Transform,
+}

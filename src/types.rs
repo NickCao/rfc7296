@@ -33,11 +33,11 @@ pub struct PayloadHeader {
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(endian = "big")]
 pub struct Proposal {
-    last_substructure: u8,
+    last_substructure: LastSubstructure,
     reserved: u8,
     proposal_length: u16,
     proposal_num: u8,
-    protocol_id: u8,
+    protocol_id: ProtocolIdentifier,
     #[deku(update = "self.spi.len()")]
     spi_size: u8,
     #[deku(update = "self.transforms.len()")]
@@ -51,7 +51,7 @@ pub struct Proposal {
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(endian = "endian", ctx = "endian: deku::ctx::Endian")]
 pub struct Transform {
-    last_substructure: u8,
+    last_substructure: LastSubstructure,
     reserved_0: u8,
     #[deku(update = "self.transform_attributes.len() + 8")]
     transform_length: u16,
@@ -227,7 +227,7 @@ mod test {
                 loop {
                     let proposal = Proposal::from_reader((&mut packet, 0));
                     dbg!(&proposal);
-                    if proposal.unwrap().1.last_substructure == 0 {
+                    if proposal.unwrap().1.last_substructure == LastSubstructure::Last {
                         break;
                     }
                 }
