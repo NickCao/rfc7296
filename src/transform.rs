@@ -1,0 +1,117 @@
+use deku::prelude::*;
+
+/// Transform Type 1 - Encryption Algorithm Transform IDs
+/// https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-5
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum ENCRTransformID {
+    #[deku(id = 0)]
+    Reserved0,
+    #[deku(id = 1)]
+    ENCR_DES_IV64,
+    #[deku(id = 2)]
+    ENCR_DES,
+    #[deku(id = 3)]
+    ENCR_3DES,
+    #[deku(id = 4)]
+    ENCR_RC5,
+    #[deku(id = 5)]
+    ENCR_IDEA,
+    #[deku(id = 6)]
+    ENCR_CAST,
+    #[deku(id = 7)]
+    ENCR_BLOWFISH,
+    #[deku(id = 8)]
+    ENCR_3IDEA,
+    #[deku(id = 9)]
+    ENCR_DES_IV32,
+    #[deku(id = 10)]
+    Reserved1,
+    #[deku(id = 11)]
+    ENCR_NULL,
+    #[deku(id = 12)]
+    ENCR_AES_CBC,
+    #[deku(id = 13)]
+    ENCR_AES_CTR,
+    #[deku(id = 14)]
+    ENCR_AES_CCM_8,
+    #[deku(id = 15)]
+    ENCR_AES_CCM_12,
+    #[deku(id = 16)]
+    ENCR_AES_CCM_16,
+    #[deku(id = 17)]
+    Unassigned0,
+    #[deku(id = 18)]
+    ENCR_AES_GCM_8,
+    #[deku(id = 19)]
+    ENCR_AES_GCM_12,
+    #[deku(id = 20)]
+    ENCR_AES_GCM_16,
+    #[deku(id = 21)]
+    ENCR_NULL_AUTH_AES_GMAC,
+    #[deku(id = 22)]
+    Reserved2,
+    #[deku(id = 23)]
+    ENCR_CAMELLIA_CBC,
+    #[deku(id = 24)]
+    ENCR_CAMELLIA_CTR,
+    #[deku(id = 25)]
+    ENCR_CAMELLIA_CCM_8,
+    #[deku(id = 26)]
+    ENCR_CAMELLIA_CCM_12,
+    #[deku(id = 27)]
+    ENCR_CAMELLIA_CCM_16,
+    #[deku(id = 28)]
+    ENCR_CHACHA20_POLY1305,
+    #[deku(id = 29)]
+    ENCR_AES_CCM_8_IIV,
+    #[deku(id = 30)]
+    ENCR_AES_GCM_16_IIV,
+    #[deku(id = 31)]
+    ENCR_CHACHA20_POLY1305_IIV,
+    #[deku(id = 32)]
+    ENCR_KUZNYECHIK_MGM_KTREE,
+    #[deku(id = 33)]
+    ENCR_MAGMA_MGM_KTREE,
+    #[deku(id = 34)]
+    ENCR_KUZNYECHIK_MGM_MAC_KTREE,
+    #[deku(id = 35)]
+    ENCR_MAGMA_MGM_MAC_KTREE,
+    #[deku(id_pat = "36..=1023")]
+    Unassigned1(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
+
+/// Transform Type 2 - Pseudorandom Function Transform IDs
+/// https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-6
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum PRFTransformID {
+    #[deku(id = 0)]
+    Reserved,
+    #[deku(id = 1)]
+    PRF_HMAC_MD5,
+    #[deku(id = 2)]
+    PRF_HMAC_SHA1,
+    #[deku(id = 3)]
+    PRF_HMAC_TIGER,
+    #[deku(id = 4)]
+    PRF_AES128_XCBC,
+    #[deku(id = 5)]
+    PRF_HMAC_SHA2_256,
+    #[deku(id = 6)]
+    PRF_HMAC_SHA2_384,
+    #[deku(id = 7)]
+    PRF_HMAC_SHA2_512,
+    #[deku(id = 8)]
+    PRF_AES128_CMAC,
+    #[deku(id = 9)]
+    PRF_HMAC_STREEBOG_512,
+    #[deku(id_pat = "10..=1023")]
+    Unassigned(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
