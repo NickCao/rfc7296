@@ -248,6 +248,38 @@ pub enum ENCRTransformID {
     Private(u16),
 }
 
+/// Transform Type 2 - Pseudorandom Function Transform IDs
+/// https://www.iana.org/assignments/ikev2-parameters/ikev2-parameters.xhtml#ikev2-parameters-6
+#[allow(non_camel_case_types)]
+#[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
+#[deku(id_type = "u16", endian = "endian", ctx = "endian: deku::ctx::Endian")]
+pub enum PRFTransformID {
+    #[deku(id = 0)]
+    Reserved,
+    #[deku(id = 1)]
+    PRF_HMAC_MD5,
+    #[deku(id = 2)]
+    PRF_HMAC_SHA1,
+    #[deku(id = 3)]
+    PRF_HMAC_TIGER,
+    #[deku(id = 4)]
+    PRF_AES128_XCBC,
+    #[deku(id = 5)]
+    PRF_HMAC_SHA2_256,
+    #[deku(id = 6)]
+    PRF_HMAC_SHA2_384,
+    #[deku(id = 7)]
+    PRF_HMAC_SHA2_512,
+    #[deku(id = 8)]
+    PRF_AES128_CMAC,
+    #[deku(id = 9)]
+    PRF_HMAC_STREEBOG_512,
+    #[deku(id_pat = "10..=1023")]
+    Unassigned(u16),
+    #[deku(id_pat = "1024..=65535")]
+    Private(u16),
+}
+
 #[allow(non_camel_case_types)]
 #[derive(Clone, Debug, PartialEq, DekuRead, DekuWrite)]
 #[deku(id_type = "u8", endian = "endian", ctx = "endian: deku::ctx::Endian")]
