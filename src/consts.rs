@@ -137,7 +137,7 @@ pub enum TransformType {
     #[deku(id = 2)]
     PRF(u8, transform::PRF),
     #[deku(id = 3)]
-    INTEG(u8, u16),
+    INTEG(u8, transform::INTEG),
     #[deku(id = 4)]
     KE(u8, transform::KE),
     #[deku(id = 5)]
@@ -159,7 +159,7 @@ pub enum TransformType {
     #[deku(id = 13)]
     KWA(u8, transform::KWA),
     #[deku(id = 14)]
-    GCAUTH(u8, u16),
+    GCAUTH(u8, transform::GCAUTH),
     #[deku(id_pat = "15..=240")]
     Unassigned(u8, u8, u16),
     #[deku(id_pat = "241..=255")]
